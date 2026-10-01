@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌸 Mis Préstamos - Scarlett 🌸</title>
+    <title>💰 Mis Préstamos - Scarlett</title>
+    
+    <!-- Ícono para la pantalla de inicio y pestaña (Bolsa de dinero) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -14,7 +19,6 @@
             --card-bg: #FFFFFF;
             --text-main: #4A3E3D;
             --text-light: #8C7B78;
-            --mint-green: #90BE6D;
             --shadow: 0 10px 30px rgba(232, 122, 93, 0.08);
         }
 
@@ -41,6 +45,7 @@
             padding: 24px 20px;
             box-shadow: var(--shadow);
             border: 1px solid rgba(248, 173, 157, 0.3);
+            height: auto;
         }
 
         header {
@@ -55,6 +60,10 @@
             color: var(--coral-dark);
             margin: 0 0 6px 0;
             letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .subtitle {
@@ -64,16 +73,24 @@
             text-transform: uppercase;
         }
 
-        /* Tarjeta de Resumen */
+        /* Tarjeta de Resumen Adaptable para Cifras Grandes */
         .summary-box {
             background: linear-gradient(135deg, #FFE8E2, #FFF2EE);
             border-radius: 20px;
             padding: 18px;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-around;
+            gap: 12px;
             text-align: center;
             margin-bottom: 25px;
             border: 1px solid var(--coral-soft);
+            height: auto;
+        }
+
+        .summary-item {
+            flex: 1 1 30%;
+            min-width: 110px;
         }
 
         .summary-item .title {
@@ -84,10 +101,12 @@
         }
 
         .summary-item .val {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
             color: var(--coral-dark);
             margin-top: 4px;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .summary-item .val.green {
@@ -117,6 +136,7 @@
             display: flex;
             gap: 10px;
             margin-bottom: 10px;
+            flex-wrap: wrap;
         }
 
         input {
@@ -130,6 +150,9 @@
             color: var(--text-main);
             transition: border-color 0.2s;
         }
+
+        .form-row input[type="text"] { flex: 2; min-width: 150px; }
+        .form-row input[type="number"] { flex: 1; min-width: 100px; }
 
         input:focus {
             border-color: var(--coral-dark);
@@ -152,7 +175,7 @@
             background: #d6684c;
         }
 
-        /* Lista de Deudores estilo Excel Femenino */
+        /* Lista de Deudores */
         .debtor-card {
             background: white;
             border-radius: 18px;
@@ -160,6 +183,7 @@
             padding: 16px;
             margin-bottom: 16px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            height: auto;
         }
 
         .debtor-header {
@@ -195,16 +219,22 @@
             color: var(--coral-dark);
         }
 
-        /* Datos numéricos del deudor */
+        /* Datos numéricos del deudor expandibles */
         .debt-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            display: flex;
+            flex-wrap: wrap;
             gap: 8px;
             background: #FAF5F4;
             padding: 10px;
             border-radius: 12px;
             text-align: center;
             margin-bottom: 12px;
+            justify-content: space-around;
+        }
+
+        .debt-details div {
+            flex: 1 1 30%;
+            min-width: 90px;
         }
 
         .debt-details div span {
@@ -217,6 +247,8 @@
         .debt-details div strong {
             font-size: 13px;
             font-weight: 600;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .rest-amount {
@@ -254,7 +286,7 @@
         /* Historial de pagos */
         .history-list {
             margin-top: 10px;
-            max-height: 120px;
+            max-height: 140px;
             overflow-y: auto;
             padding-right: 4px;
         }
@@ -271,6 +303,7 @@
         .history-item .val-pay {
             color: #588157;
             font-weight: 500;
+            word-break: break-word;
         }
     </style>
 </head>
@@ -278,7 +311,7 @@
 
     <div class="container">
         <header>
-            <h1>🌸 Agenda de Scarlett 🌸</h1>
+            <h1>💰 Agenda de Scarlett 🌸</h1>
             <div class="subtitle">Control de Préstamos y Devoluciones</div>
         </header>
 
@@ -286,15 +319,15 @@
         <div class="summary-box">
             <div class="summary-item">
                 <div class="title">Total Prestado</div>
-                <div class="val" id="total-lent">$0.00</div>
+                <div class="val" id="total-lent">$0</div>
             </div>
             <div class="summary-item">
                 <div class="title">Total Cobrado</div>
-                <div class="val green" id="total-recovered">$0.00</div>
+                <div class="val green" id="total-recovered">$0</div>
             </div>
             <div class="summary-item">
                 <div class="title">Por Cobrar</div>
-                <div class="val" id="total-pending">$0.00</div>
+                <div class="val" id="total-pending">$0</div>
             </div>
         </div>
 
@@ -303,7 +336,7 @@
             <div class="section-title">✨ Registrar Nuevo Préstamo</div>
             <div class="form-row">
                 <input type="text" id="debtor-name" placeholder="Nombre (ej. María López)">
-                <input type="number" id="debtor-amount" placeholder="Monto ($)">
+                <input type="number" id="debtor-amount" placeholder="Monto ($ CLP)">
             </div>
             <button class="btn-primary" onclick="addDebtor()">Registrar Préstamo</button>
         </div>
@@ -316,18 +349,27 @@
     <script>
         let debtors = [];
 
-        // Cargar datos al iniciar la app
+        // Formateador oficial de Peso Chileno (CLP)
+        function formatCLP(amount) {
+            return new Intl.NumberFormat('es-CL', {
+                style: 'currency',
+                currency: 'CLP',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Cargar datos guardados al abrir
         window.onload = function() {
-            const savedData = localStorage.getItem('scarlett_loans');
+            const savedData = localStorage.getItem('scarlett_loans_clp');
             if (savedData) {
                 debtors = JSON.parse(savedData);
                 renderDebtors();
             }
         };
 
-        // Guardado automático en memoria local
+        // Guardado automático en memoria del teléfono
         function autoSave() {
-            localStorage.setItem('scarlett_loans', JSON.stringify(debtors));
+            localStorage.setItem('scarlett_loans_clp', JSON.stringify(debtors));
             updateSummary();
         }
 
@@ -354,7 +396,6 @@
             autoSave();
             renderDebtors();
 
-            // Limpiar inputs manteniendo el foco cómodo
             nameInput.value = '';
             amountInput.value = '';
         }
@@ -371,8 +412,8 @@
             const debtor = debtors.find(d => d.id === debtorId);
             if (debtor) {
                 const now = new Date();
-                const dateStr = now.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }) + ' ' + 
-                                now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                const dateStr = now.toLocaleDateString('es-CL', { day: '2-digit', month: 'short' }) + ' ' + 
+                                now.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
 
                 debtor.payments.unshift({
                     id: 'pay-' + Date.now(),
@@ -405,9 +446,9 @@
 
             const totalPending = totalLent - totalRecovered;
 
-            document.getElementById('total-lent').innerText = `$${totalLent.toFixed(2)}`;
-            document.getElementById('total-recovered').innerText = `$${totalRecovered.toFixed(2)}`;
-            document.getElementById('total-pending').innerText = `$${totalPending.toFixed(2)}`;
+            document.getElementById('total-lent').innerText = formatCLP(totalLent);
+            document.getElementById('total-recovered').innerText = formatCLP(totalRecovered);
+            document.getElementById('total-pending').innerText = formatCLP(totalPending);
         }
 
         function renderDebtors() {
@@ -432,7 +473,7 @@
                     historyHTML += `
                         <div class="history-item">
                             <span>📅 ${p.date}</span>
-                            <span class="val-pay">+$${p.amount.toFixed(2)}</span>
+                            <span class="val-pay">+${formatCLP(p.amount)}</span>
                         </div>
                     `;
                 });
@@ -447,20 +488,20 @@
                     <div class="debt-details">
                         <div>
                             <span>Prestado</span>
-                            <strong>$${d.initialAmount.toFixed(2)}</strong>
+                            <strong>${formatCLP(d.initialAmount)}</strong>
                         </div>
                         <div>
                             <span>Abonado</span>
-                            <strong style="color: #588157;">$${totalPaid.toFixed(2)}</strong>
+                            <strong style="color: #588157;">${formatCLP(totalPaid)}</strong>
                         </div>
                         <div>
                             <span>Resta</span>
-                            <strong class="rest-amount">$${rest.toFixed(2)}</strong>
+                            <strong class="rest-amount">${formatCLP(rest)}</strong>
                         </div>
                     </div>
 
                     <div class="abono-form">
-                        <input type="number" id="pay-amount-${d.id}" placeholder="Monto abonado ($)">
+                        <input type="number" id="pay-amount-${d.id}" placeholder="Monto abonado ($ CLP)">
                         <button class="btn-small" onclick="addPayment('${d.id}')">Abonar</button>
                     </div>
 
