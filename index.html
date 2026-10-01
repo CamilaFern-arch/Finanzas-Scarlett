@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 Mis Préstamos - Scarlett 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --coral-pastel: #F8AD9D;
+            --coral-soft: #FBC4AB;
+            --coral-dark: #E87A5D;
+            --cream-bg: #FFF9F8;
+            --card-bg: #FFFFFF;
+            --text-main: #4A3E3D;
+            --text-light: #8C7B78;
+            --mint-green: #90BE6D;
+            --shadow: 0 10px 30px rgba(232, 122, 93, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+        }
+
+        body {
+            background-color: var(--cream-bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px 12px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 28px;
+            padding: 24px 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(248, 173, 157, 0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 500;
+            color: var(--coral-dark);
+            margin: 0 0 6px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--text-light);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Tarjeta de Resumen */
+        .summary-box {
+            background: linear-gradient(135deg, #FFE8E2, #FFF2EE);
+            border-radius: 20px;
+            padding: 18px;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid var(--coral-soft);
+        }
+
+        .summary-item .title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            letter-spacing: 0.5px;
+        }
+
+        .summary-item .val {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--coral-dark);
+            margin-top: 4px;
+        }
+
+        .summary-item .val.green {
+            color: #588157;
+        }
+
+        /* Sección Agregar Deudor */
+        .card-section {
+            background: #FFFBFB;
+            border: 1px dashed var(--coral-soft);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--coral-dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #F3D5CE;
+            border-radius: 12px;
+            font-size: 13px;
+            outline: none;
+            background: white;
+            color: var(--text-main);
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--coral-dark);
+        }
+
+        button.btn-primary {
+            width: 100%;
+            background: var(--coral-dark);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button.btn-primary:hover {
+            background: #d6684c;
+        }
+
+        /* Lista de Deudores estilo Excel Femenino */
+        .debtor-card {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #F7E5E1;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+        }
+
+        .debtor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #FDEEEB;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .debtor-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-main);
+        }
+
+        .debtor-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-light);
+            padding: 4px;
+        }
+
+        .btn-icon:hover {
+            color: var(--coral-dark);
+        }
+
+        /* Datos numéricos del deudor */
+        .debt-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            background: #FAF5F4;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .debt-details div span {
+            display: block;
+            font-size: 10px;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        .debt-details div strong {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .rest-amount {
+            color: var(--coral-dark);
+        }
+
+        /* Formulario de Abono */
+        .abono-form {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .abono-form input {
+            padding: 8px 10px;
+            font-size: 12px;
+        }
+
+        .btn-small {
+            background: var(--coral-pastel);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-small:hover {
+            background: var(--coral-dark);
+        }
+
+        /* Historial de pagos */
+        .history-list {
+            margin-top: 10px;
+            max-height: 120px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            padding: 4px 0;
+            border-bottom: 1px dashed #F3E5E2;
+            color: var(--text-light);
+        }
+
+        .history-item .val-pay {
+            color: #588157;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🌸 Agenda de Scarlett 🌸</h1>
+            <div class="subtitle">Control de Préstamos y Devoluciones</div>
+        </header>
+
+        <!-- Resumen General -->
+        <div class="summary-box">
+            <div class="summary-item">
+                <div class="title">Total Prestado</div>
+                <div class="val" id="total-lent">$0.00</div>
+            </div>
+            <div class="summary-item">
+                <div class="title">Total Cobrado</div>
+                <div class="val green" id="total-recovered">$0.00</div>
+            </div>
+            <div class="summary-item">
+                <div class="title">Por Cobrar</div>
+                <div class="val" id="total-pending">$0.00</div>
+            </div>
+        </div>
+
+        <!-- Formulario Nuevo Deudor -->
+        <div class="card-section">
+            <div class="section-title">✨ Registrar Nuevo Préstamo</div>
+            <div class="form-row">
+                <input type="text" id="debtor-name" placeholder="Nombre (ej. María López)">
+                <input type="number" id="debtor-amount" placeholder="Monto ($)">
+            </div>
+            <button class="btn-primary" onclick="addDebtor()">Registrar Préstamo</button>
+        </div>
+
+        <!-- Lista de Deudores -->
+        <div class="section-title" style="margin-left: 5px;">📋 Mis Deudores</div>
+        <div id="debtors-container"></div>
+    </div>
+
+    <script>
+        let debtors = [];
+
+        // Cargar datos al iniciar la app
+        window.onload = function() {
+            const savedData = localStorage.getItem('scarlett_loans');
+            if (savedData) {
+                debtors = JSON.parse(savedData);
+                renderDebtors();
+            }
+        };
+
+        // Guardado automático en memoria local
+        function autoSave() {
+            localStorage.setItem('scarlett_loans', JSON.stringify(debtors));
+            updateSummary();
+        }
+
+        function addDebtor() {
+            const nameInput = document.getElementById('debtor-name');
+            const amountInput = document.getElementById('debtor-amount');
+
+            const name = nameInput.value.trim();
+            const amount = parseFloat(amountInput.value);
+
+            if (!name || isNaN(amount) || amount <= 0) {
+                alert('Por favor escribe un nombre y un monto válido. 💕');
+                return;
+            }
+
+            const newDebtor = {
+                id: 'debtor-' + Date.now(),
+                name: name,
+                initialAmount: amount,
+                payments: []
+            };
+
+            debtors.unshift(newDebtor);
+            autoSave();
+            renderDebtors();
+
+            // Limpiar inputs manteniendo el foco cómodo
+            nameInput.value = '';
+            amountInput.value = '';
+        }
+
+        function addPayment(debtorId) {
+            const amountInput = document.getElementById(`pay-amount-${debtorId}`);
+            const paymentVal = parseFloat(amountInput.value);
+
+            if (isNaN(paymentVal) || paymentVal <= 0) {
+                alert('Ingresa un monto de abono válido. 💕');
+                return;
+            }
+
+            const debtor = debtors.find(d => d.id === debtorId);
+            if (debtor) {
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }) + ' ' + 
+                                now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+                debtor.payments.unshift({
+                    id: 'pay-' + Date.now(),
+                    amount: paymentVal,
+                    date: dateStr
+                });
+
+                autoSave();
+                renderDebtors();
+            }
+        }
+
+        function deleteDebtor(debtorId) {
+            if (confirm('¿Deseas eliminar a este deudor y todo su historial?')) {
+                debtors = debtors.filter(d => d.id !== debtorId);
+                autoSave();
+                renderDebtors();
+            }
+        }
+
+        function updateSummary() {
+            let totalLent = 0;
+            let totalRecovered = 0;
+
+            debtors.forEach(d => {
+                totalLent += d.initialAmount;
+                const totalPaid = d.payments.reduce((sum, p) => sum + p.amount, 0);
+                totalRecovered += totalPaid;
+            });
+
+            const totalPending = totalLent - totalRecovered;
+
+            document.getElementById('total-lent').innerText = `$${totalLent.toFixed(2)}`;
+            document.getElementById('total-recovered').innerText = `$${totalRecovered.toFixed(2)}`;
+            document.getElementById('total-pending').innerText = `$${totalPending.toFixed(2)}`;
+        }
+
+        function renderDebtors() {
+            const container = document.getElementById('debtors-container');
+            container.innerHTML = '';
+
+            if (debtors.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: var(--text-light); font-size: 13px; padding: 20px;">No tienes préstamos registrados todavía. 💕</div>`;
+                updateSummary();
+                return;
+            }
+
+            debtors.forEach(d => {
+                const totalPaid = d.payments.reduce((sum, p) => sum + p.amount, 0);
+                const rest = d.initialAmount - totalPaid;
+
+                const card = document.createElement('div');
+                card.className = 'debtor-card';
+
+                let historyHTML = '';
+                d.payments.forEach(p => {
+                    historyHTML += `
+                        <div class="history-item">
+                            <span>📅 ${p.date}</span>
+                            <span class="val-pay">+$${p.amount.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="debtor-header">
+                        <span class="debtor-name">${d.name}</span>
+                        <div class="debtor-actions">
+                            <button class="btn-icon" onclick="deleteDebtor('${d.id}')" title="Eliminar">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="debt-details">
+                        <div>
+                            <span>Prestado</span>
+                            <strong>$${d.initialAmount.toFixed(2)}</strong>
+                        </div>
+                        <div>
+                            <span>Abonado</span>
+                            <strong style="color: #588157;">$${totalPaid.toFixed(2)}</strong>
+                        </div>
+                        <div>
+                            <span>Resta</span>
+                            <strong class="rest-amount">$${rest.toFixed(2)}</strong>
+                        </div>
+                    </div>
+
+                    <div class="abono-form">
+                        <input type="number" id="pay-amount-${d.id}" placeholder="Monto abonado ($)">
+                        <button class="btn-small" onclick="addPayment('${d.id}')">Abonar</button>
+                    </div>
+
+                    ${d.payments.length > 0 ? `<div class="history-list">${historyHTML}</div>` : ''}
+                `;
+
+                container.appendChild(card);
+            });
+
+            updateSummary();
+        }
+    </script>
+</body>
+</html>
